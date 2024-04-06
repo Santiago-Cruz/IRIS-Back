@@ -13,11 +13,11 @@ IRIS Apartment Management is a project designed to streamline the management of 
 
 Install this with npm
 ```bash
-  cd backend
+  cd IRIS-Back
   npm install
 ```
 
-Start the database
+Start the database (If needed)
 ```bash
   mongod                       //For windows
   sudo service mongod start    // Linux
