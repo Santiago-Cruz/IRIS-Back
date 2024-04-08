@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Post, Get, Res, HttpStatus, Body, NotFoundException, Delete, Query, Put} from '@nestjs/common';
+import { Controller, Post, Get, Res, HttpStatus, Body, NotFoundException, Delete, Put, Param, Query} from '@nestjs/common';
 import { CreateUsersDTO } from './dto/users.dto';
 
 import { UserService } from './users.service';
@@ -25,24 +25,22 @@ export class UsersController {
     async getCargo(@Res() res){
 
         const cargo= await this.userService.getUsers();
-
         return res.status(HttpStatus.OK).json({
             message: 'Users',
             user: cargo
         })
     }
 
-    @Get('/cargo') 
-    async getCargoId(@Res() res, @Query('Id') Id){
-
-        const cargo= await this.userService.getUser(Id);
+    @Get('/cargo/:id') 
+    async getCargoId(@Res() res, @Param('id') id: string){
+        const cargo= await this.userService.getUser(id);
         if (!cargo) throw new NotFoundException('Cargo no encontrado');
 
         res.status(HttpStatus.OK).json({cargo})
     }
-    @Delete('/delete')
-    async deleteCargo(@Res() res, @Query('Id') Id){
-        const cargo= await this.userService.deleteUser(Id);
+    @Delete('/delete/:id')
+    async deleteCargo(@Res() res, @Param('id') id: string){
+        const cargo= await this.userService.deleteUser(id);
         if (!cargo) throw new NotFoundException('Cargo no encontrado');
 
         res.status(HttpStatus.OK).json({
@@ -52,8 +50,8 @@ export class UsersController {
     }
 
     @Put('/update')
-    async updateCargo(@Res() res, @Body() createUsersDTO: CreateUsersDTO, @Query('Id') Id){
-        const cargo= await this.userService.updateUser(Id, createUsersDTO);
+    async updateCargo(@Res() res, @Body() createUsersDTO: CreateUsersDTO, @Query('id') id){
+        const cargo= await this.userService.updateUser(id, createUsersDTO);
 
         if (!cargo) throw new NotFoundException('Cargo no encontrado');
 
